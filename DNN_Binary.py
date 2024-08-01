@@ -25,12 +25,12 @@ tf.keras.backend.set_floatx("float64")
 # ==== Initialise parameters as globals outside __name__ == __main__ so that spawned Windows processes can see them ====
 
 global TRAINING_PATH, VALIDATION_PATH, TESTING_PATH
-TRAINING_PATH = r"E:\HonoursThesis\Code\Datasets\Cleaned Datasets\UNSW_NB15_training-set"
-VALIDATION_PATH = r"E:\HonoursThesis\Code\Datasets\Cleaned Datasets\UNSW_NB15_validation-set"
-TESTING_PATH = r"E:\HonoursThesis\Code\Datasets\Cleaned Datasets\UNSW_NB15_testing-set"
-# TRAINING_PATH = r"E:\HonoursThesis\Code\Datasets\Cleaned Datasets\CICIDS17_training-set"
-# VALIDATION_PATH = r"E:\HonoursThesis\Code\Datasets\Cleaned Datasets\CICIDS17_validation-set"
-# TESTING_PATH = r"E:\HonoursThesis\Code\Datasets\Cleaned Datasets\CICIDS17_testing-set"
+TRAINING_PATH = "./Datasets/Cleaned Datasets/UNSW_NB15_training-set"
+VALIDATION_PATH = "./Datasets/Cleaned Datasets/UNSW_NB15_validation-set"
+TESTING_PATH = "./Datasets/Cleaned Datasets/UNSW_NB15_testing-set"
+# TRAINING_PATH = "./Datasets/Cleaned Datasets/CICIDS17_training-set"
+# VALIDATION_PATH = "./Datasets/Cleaned Datasets/CICIDS17_validation-set"
+# TESTING_PATH = "./Datasets/Cleaned Datasets/CICIDS17_testing-set"
 
 global DATASET, N_LAYERS, DROPOUT, LEARNING_RATE, BATCH_SIZE, N_EPOCHS, THRESHOLD, SAVEPATH
 DATASET = "UNSW"
@@ -41,11 +41,11 @@ LEARNING_RATE = 0.01
 BATCH_SIZE = 64
 N_EPOCHS = 1000
 THRESHOLD = 0.5
-SAVEPATH = rf"E:\HonoursThesis\Code\models_binary\DNN_{N_LAYERS}-layer_{N_EPOCHS}-epochs_{DATASET}.keras"
+SAVEPATH = f"./models_binary/DNN_{N_LAYERS}-layer_{N_EPOCHS}-epochs_{DATASET}.keras"
 
 global N_QUBITS, Q_SAVEPATH
 N_QUBITS = 12
-Q_SAVEPATH = rf"E:\HonoursThesis\Code\models_binary\DQiNN_{N_LAYERS}-layer_{N_QUBITS}-qubit_{N_EPOCHS}-epochs_{DATASET}.keras"
+Q_SAVEPATH = f"./models_binary/DQiNN_{N_LAYERS}-layer_{N_QUBITS}-qubit_{N_EPOCHS}-epochs_{DATASET}.keras"
 
 
 # ==== Reset the keras session (trying to work around memory leak issues) ====
@@ -82,8 +82,8 @@ class DNN:
         gc.collect()
 
         self.save_path = savepath
-        tmp_name = self.save_path.split("\\")[-1]
-        self.chk_path = rf"E:\HonoursThesis\Code\models_binary\checkpoints\{tmp_name}"
+        tmp_name = self.save_path.split("/")[-1]
+        self.chk_path = f"./models_binary/checkpoints/{tmp_name}"
         del tmp_name
 
         self.batch_size = batch_size
@@ -171,8 +171,8 @@ class DQiNN:
         gc.collect()
 
         self.save_path = savepath
-        tmp_name = self.save_path.split("\\")[-1]
-        self.chk_path = rf"E:\HonoursThesis\Code\models_binary\checkpoints\{tmp_name}"
+        tmp_name = self.save_path.split("/")[-1]
+        self.chk_path = f"./models_binary/checkpoints/{tmp_name}"
         del tmp_name
 
         self.prediction_threshold = threshold
