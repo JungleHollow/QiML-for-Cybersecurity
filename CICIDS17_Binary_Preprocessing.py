@@ -9,17 +9,17 @@ import tensorflow as tf
 from tensorflow.data.experimental import make_csv_dataset
 
 paths = [
-    r"E:\HonoursThesis\Code\Datasets\CICIDS2017\MachineLearningCVE\Friday-WorkingHours-Afternoon-DDos.pcap_ISCX.csv",
-    r"E:\HonoursThesis\Code\Datasets\CICIDS2017\MachineLearningCVE\Friday-WorkingHours-Afternoon-PortScan.pcap_ISCX.csv",
-    r"E:\HonoursThesis\Code\Datasets\CICIDS2017\MachineLearningCVE\Friday-WorkingHours-Morning.pcap_ISCX.csv",
-    r"E:\HonoursThesis\Code\Datasets\CICIDS2017\MachineLearningCVE\Monday-WorkingHours.pcap_ISCX.csv",
-    r"E:\HonoursThesis\Code\Datasets\CICIDS2017\MachineLearningCVE\Thursday-WorkingHours-Afternoon-Infiltration.pcap_ISCX.csv",
-    r"E:\HonoursThesis\Code\Datasets\CICIDS2017\MachineLearningCVE\Thursday-WorkingHours-Morning-WebAttacks.pcap_ISCX.csv",
-    r"E:\HonoursThesis\Code\Datasets\CICIDS2017\MachineLearningCVE\Tuesday-WorkingHours.pcap_ISCX.csv",
-    r"E:\HonoursThesis\Code\Datasets\CICIDS2017\MachineLearningCVE\Wednesday-WorkingHours.pcap_ISCX.csv"
+    "./Datasets/CICIDS2017/MachineLearningCVE/Friday-WorkingHours-Afternoon-DDos.pcap_ISCX.csv",
+    "./Datasets/CICIDS2017/MachineLearningCVE/Friday-WorkingHours-Afternoon-PortScan.pcap_ISCX.csv",
+    "./Datasets/CICIDS2017/MachineLearningCVE/Friday-WorkingHours-Morning.pcap_ISCX.csv",
+    "./Datasets/CICIDS2017/MachineLearningCVE/Monday-WorkingHours.pcap_ISCX.csv",
+    "./Datasets/CICIDS2017/MachineLearningCVE/Thursday-WorkingHours-Afternoon-Infiltration.pcap_ISCX.csv",
+    "./Datasets/CICIDS2017/MachineLearningCVE/Thursday-WorkingHours-Morning-WebAttacks.pcap_ISCX.csv",
+    "./Datasets/CICIDS2017/MachineLearningCVE/Tuesday-WorkingHours.pcap_ISCX.csv",
+    "./Datasets/CICIDS2017/MachineLearningCVE/Wednesday-WorkingHours.pcap_ISCX.csv"
 ]
 
-fullpath = r"E:\HonoursThesis\Code\Datasets\CICIDS2017\MachineLearningCVE\CICIDS17_Full.csv"
+fullpath = "./Datasets/CICIDS2017/MachineLearningCVE/CICIDS17_Full.csv"
 
 with open(fullpath, "wb") as outfile:
     for i, path in enumerate(paths):
@@ -108,27 +108,27 @@ train = train.astype("float32")
 validation = validation.astype("float32")
 test = test.astype("float32")
 
-train.to_csv(r"E:\HonoursThesis\Code\Datasets\Cleaned Datasets\CICIDS17_training-set.csv", index=False)
-validation.to_csv(r"E:\HonoursThesis\Code\Datasets\Cleaned Datasets\CICIDS17_validation-set.csv", index=False)
-test.to_csv(r"E:\HonoursThesis\Code\Datasets\Cleaned Datasets\CICIDS17_testing-set.csv", index=False)
+train.to_csv("./Datasets/Cleaned Datasets/CICIDS17_training-set.csv", index=False)
+validation.to_csv("./Datasets/Cleaned Datasets/CICIDS17_validation-set.csv", index=False)
+test.to_csv("./Datasets/Cleaned Datasets/CICIDS17_testing-set.csv", index=False)
 
 del train, validation, test
 
 print(f"All csv files have been successfully written to disk...")
 
-train_ds = make_csv_dataset(r"E:\HonoursThesis\Code\Datasets\Cleaned Datasets\CICIDS17_training-set.csv",
+train_ds = make_csv_dataset("./Datasets/Cleaned Datasets/CICIDS17_training-set.csv",
                             label_name="label", batch_size=64, shuffle=True, num_epochs=1, ignore_errors=True)
 
-train_ds.save(r"E:\HonoursThesis\Code\Datasets\Cleaned Datasets\CICIDS17_training-set")
+train_ds.save("./Datasets/Cleaned Datasets/CICIDS17_training-set")
 
-val_ds = make_csv_dataset(r"E:\HonoursThesis\Code\Datasets\Cleaned Datasets\CICIDS17_validation-set.csv",
+val_ds = make_csv_dataset("./Datasets/Cleaned Datasets/CICIDS17_validation-set.csv",
                           label_name="label", batch_size=64, shuffle=True, num_epochs=1, ignore_errors=True)
 
-val_ds.save(r"E:\HonoursThesis\Code\Datasets\Cleaned Datasets\CICIDS17_validation-set")
+val_ds.save("./Datasets/Cleaned Datasets/CICIDS17_validation-set")
 
-test_ds = make_csv_dataset(r"E:\HonoursThesis\Code\Datasets\Cleaned Datasets\CICIDS17_testing-set.csv",
+test_ds = make_csv_dataset("./Datasets/Cleaned Datasets/CICIDS17_testing-set.csv",
                            label_name="label", batch_size=64, shuffle=False, num_epochs=1, ignore_errors=True)
 
-test_ds.save(r"E:\HonoursThesis\Code\Datasets\Cleaned Datasets\CICIDS17_testing-set")
+test_ds.save("./Datasets/Cleaned Datasets/CICIDS17_testing-set")
 
 print(f"All data sets have been successfully written to disk...\n\nPROCESS FINISHED")
