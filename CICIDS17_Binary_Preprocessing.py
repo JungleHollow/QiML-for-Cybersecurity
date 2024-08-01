@@ -3,7 +3,6 @@ import pandas as pd
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
 from imblearn.over_sampling import SMOTE
-from sklearn.feature_selection import SelectKBest, f_classif
 import shutil
 import tensorflow as tf
 from tensorflow.data.experimental import make_csv_dataset
@@ -36,17 +35,6 @@ all_data.columns = map(str.strip, all_data.columns)
 all_data["label"] = np.where(all_data["label"] == "BENIGN", 0, 1)
 
 all_data = all_data.replace([np.inf, -np.inf], np.nan).dropna(axis=1)
-
-X = all_data.drop(columns=["label"], axis=1)
-Y = all_data["label"]
-
-test = SelectKBest(score_func=f_classif, k=40)
-test.fit(X, Y)
-cols_index = test.get_support(indices=True)
-
-X = X.iloc[:, cols_index]
-
-all_data = pd.concat([X, Y], axis=1)
 
 train = all_data.iloc[:int(all_data.shape[0] * 0.8), :]
 test = all_data.iloc[int(all_data.shape[0] * 0.8):, :]
