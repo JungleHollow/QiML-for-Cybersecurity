@@ -1,10 +1,13 @@
 import os
 os.environ["TF_USE_LEGACY_KERAS"] = "1"
+
 import gc
 import multiprocessing
+
 import pandas as pd
 import numpy as np
 np.random.seed(1337)
+
 import tensorflow as tf
 from tensorflow.keras.layers import Dense, Dropout
 from tensorflow.keras.models import save_model, load_model, Sequential
@@ -14,9 +17,11 @@ from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint
 from tensorflow.keras.losses import BinaryCrossentropy
 from tensorflow.keras.backend import clear_session
 from tensorflow.data import Dataset
+
 from sklearn.metrics import precision_score, recall_score, f1_score, accuracy_score, confusion_matrix, precision_recall_curve
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import OneHotEncoder, Normalizer, StandardScaler
+
 import pennylane as qml
 from pennylane.templates import AngleEmbedding, BasicEntanglerLayers
 
@@ -44,7 +49,7 @@ THRESHOLD = 0.5
 SAVEPATH = f"./models_binary/DNN_{N_LAYERS}-layer_{N_EPOCHS}-epochs_{DATASET}.keras"
 
 global N_QUBITS, Q_SAVEPATH
-N_QUBITS = 12
+N_QUBITS = 16
 Q_SAVEPATH = f"./models_binary/DQiNN_{N_LAYERS}-layer_{N_QUBITS}-qubit_{N_EPOCHS}-epochs_{DATASET}.keras"
 
 
@@ -220,7 +225,7 @@ class DQiNN:
         self.model.compile(loss="binary_crossentropy", optimizer=self.opt, metrics=["accuracy"])
 
         if loadpath:
-            self.model.fit(self.training_set.map(dataset_fix), steps_per_epoch=1, epochs=1, verbose=0)   # Needed to allow weight loading
+            self.model.fit(self.training_set.map(dataset_fix), steps_per_epoch=1, epochs=1)   # Needed to allow weight loading
             self.model.load_weights(loadpath)
 
         self.early_stop = EarlyStopping(monitor="val_loss", patience=30, mode="min")
@@ -262,7 +267,7 @@ class DQiNN:
         best_model.add(Dense(1, activation="sigmoid"))
 
         best_model.compile(loss="binary_crossentropy", optimizer="adam", metrics=["accuracy"])
-        best_model.fit(self.training_set.map(dataset_fix), steps_per_epoch=1, epochs=1, verbose=0)  # Needed to allow weight loading
+        best_model.fit(self.training_set.map(dataset_fix), steps_per_epoch=1, epochs=1)  # Needed to allow weight loading
         best_model.load_weights(self.chk_path)
 
         prediction_proba = best_model.predict(self.testing_set.map(dataset_fix))
@@ -293,7 +298,7 @@ class DQiNN:
         print(f"Model saved to {self.save_path} successfully...")
 
 
-# ==== Dummy functions to enable multiprocessing trick (workaround for keras model.predict() memory leak) ====
+# ==== Dummy functions to enable multiprocessing trick (workaround for keras model.predict() memory leak when called multiple times in a session) ====
 def init_dnn():
     if os.path.isfile(SAVEPATH):
         model = DNN(TRAINING_PATH, VALIDATION_PATH, TESTING_PATH, SAVEPATH, loadpath=SAVEPATH, layers=N_LAYERS,
@@ -323,7 +328,7 @@ def init_dqinn():
         my_q_model.evaluate_model()
 
 
-# ==== Parameter configuration and script initialisation ====
+# ==== Script initialisation ====
 if __name__ == "__main__":
     reset_keras()
 
