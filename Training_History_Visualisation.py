@@ -5,11 +5,11 @@ import seaborn as sns
 import os
 from glob import glob
 
-all_files = glob("*.csv", root_dir=r"C:\Users\WornA\OneDrive\Desktop\Uni Work\Honours Thesis\Code\models_binary\histories")
+all_files = glob("*.csv", root_dir="./models_binary/histories")
 
 for file in all_files:
     filename = file.split(".csv")[0]
-    df = pd.read_csv(rf"C:\Users\WornA\OneDrive\Desktop\Uni Work\Honours Thesis\Code\models_binary\histories\{file}")
+    df = pd.read_csv(f"./models_binary/histories/{file}")
 
     loss, val_loss = df["loss"], df["val_loss"]
     acc, val_acc = df["accuracy"], df["val_accuracy"]
@@ -24,7 +24,7 @@ for file in all_files:
     plt.title(f"Loss History for {filename}")
     plt.xlabel("Epochs")
     plt.ylabel("Loss Function")
-    plt.savefig(rf"C:\Users\WornA\OneDrive\Desktop\Uni Work\Honours Thesis\Code\history_graphs\entanglement_experiment\{filename}_loss.png", dpi=300, bbox_inches="tight")
+    plt.savefig(f"./history_graphs/entanglement_experiment/{filename}_loss.png", dpi=300, bbox_inches="tight")
 
     del fig, ax
 
@@ -38,4 +38,4 @@ for file in all_files:
     plt.title(f"Accuracy History for {filename}")
     plt.xlabel("Epochs")
     plt.ylabel("Classification Accuracy")
-    plt.savefig(rf"C:\Users\WornA\OneDrive\Desktop\Uni Work\Honours Thesis\Code\history_graphs\entanglement_experiment\{filename}_accuracy.png", dpi=300, bbox_inches="tight")
+    plt.savefig(f"./history_graphs/entanglement_experiment/{filename}_accuracy.png", dpi=300, bbox_inches="tight")
