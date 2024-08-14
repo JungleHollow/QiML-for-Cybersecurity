@@ -10,13 +10,13 @@ ip_cols = ["srcip", "dstip", "sport", "dsport"]
 
 dfs = []
 for i in range(1, 5):
-    path = f"./Datasets/UNSW_NB15/UNSW-NB15_{i}.csv"
+    path = fr"C:\Users\WornA\OneDrive\Desktop\Uni Work\Honours Thesis\Code\Datasets\UNSW-NB15\UNSW-NB15_{i}.csv"
     tmp = pd.read_csv(path, header=None)
     dfs.append(tmp)
 
 all_data = pd.concat(dfs).reset_index(drop=True)
 
-df_col = pd.read_csv("./Datasets/UNSW_NB15/UNSW-NB15_features.csv", encoding="ISO-8859-1")
+df_col = pd.read_csv(r"C:\Users\WornA\OneDrive\Desktop\Uni Work\Honours Thesis\Code\Datasets\UNSW-NB15\UNSW-NB15_features.csv", encoding="ISO-8859-1")
 df_col["Name"] = df_col["Name"].apply(lambda x: x.strip().replace(" ", "").lower())
 
 all_data.columns = df_col["Name"]
@@ -102,23 +102,23 @@ train = train.astype("float32")
 validation = validation.astype("float32")
 test = test.astype("float32")
 
-train.to_csv("./Datasets/Cleaned Datasets/UNSW_NB15_training-set.csv", index=False)
-validation.to_csv("./Datasets/Cleaned Datasets/UNSW_NB15_validation-set.csv", index=False)
-test.to_csv("./Datasets/Cleaned Datasets/UNSW_NB15_testing-set.csv", index=False)
+train.to_csv(r"C:\Users\WornA\OneDrive\Desktop\Uni Work\Honours Thesis\Code\Datasets\Cleaned Datasets\UNSW_NB15_training-set.csv", index=False)
+validation.to_csv(r"C:\Users\WornA\OneDrive\Desktop\Uni Work\Honours Thesis\Code\Datasets\Cleaned Datasets\UNSW_NB15_validation-set.csv", index=False)
+test.to_csv(r"C:\Users\WornA\OneDrive\Desktop\Uni Work\Honours Thesis\Code\Datasets\Cleaned Datasets\UNSW_NB15_testing-set.csv", index=False)
 
 del train, validation, test
 
-train_ds = make_csv_dataset("./Datasets/Cleaned Datasets/UNSW_NB15_training-set.csv",
+train_ds = make_csv_dataset(r"C:\Users\WornA\OneDrive\Desktop\Uni Work\Honours Thesis\Code\Datasets\Cleaned Datasets\UNSW_NB15_training-set.csv",
                             label_name="label", batch_size=64, shuffle=True, num_epochs=1, ignore_errors=True)
 
-train_ds.save("./Datasets/Cleaned Datasets/UNSW_NB15_training-set")
+train_ds.save(r"C:\Users\WornA\OneDrive\Desktop\Uni Work\Honours Thesis\Code\Datasets\Cleaned Datasets\UNSW_NB15_training-set")
 
-val_ds = make_csv_dataset("./Datasets/Cleaned Datasets/UNSW_NB15_validation-set.csv",
+val_ds = make_csv_dataset(r"C:\Users\WornA\OneDrive\Desktop\Uni Work\Honours Thesis\Code\Datasets\Cleaned Datasets\UNSW_NB15_validation-set.csv",
                           label_name="label", batch_size=64, shuffle=True, num_epochs=1, ignore_errors=True)
 
-val_ds.save("./Datasets/Cleaned Datasets/UNSW_NB15_validation-set")
+val_ds.save(r"C:\Users\WornA\OneDrive\Desktop\Uni Work\Honours Thesis\Code\Datasets\Cleaned Datasets\UNSW_NB15_validation-set")
 
-test_ds = make_csv_dataset("./Datasets/Cleaned Datasets/UNSW_NB15_testing-set.csv",
+test_ds = make_csv_dataset(r"C:\Users\WornA\OneDrive\Desktop\Uni Work\Honours Thesis\Code\Datasets\Cleaned Datasets\UNSW_NB15_testing-set.csv",
                            label_name="label", batch_size=64, shuffle=False, num_epochs=1, ignore_errors=True)
 
-test_ds.save("./Datasets/Cleaned Datasets/UNSW_NB15_testing-set")
+test_ds.save(r"C:\Users\WornA\OneDrive\Desktop\Uni Work\Honours Thesis\Code\Datasets\Cleaned Datasets\UNSW_NB15_testing-set")
