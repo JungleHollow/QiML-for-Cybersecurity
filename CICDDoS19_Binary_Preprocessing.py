@@ -17,31 +17,31 @@ def index_logic(index):
 drop_cols = ["Unnamed: 0", "Flow ID", " Source IP", " Destination IP", " Destination Port", " Source Port", " Timestamp", "SimillarHTTP"]
 
 paths = [
-    r"C:\Users\WornA\OneDrive\Desktop\Uni Work\Honours Thesis\Code\Datasets\CICDDoS2019\01-12(Training)\DrDoS_DNS.csv",
-    r"C:\Users\WornA\OneDrive\Desktop\Uni Work\Honours Thesis\Code\Datasets\CICDDoS2019\01-12(Training)\DrDoS_LDAP.csv",
-    r"C:\Users\WornA\OneDrive\Desktop\Uni Work\Honours Thesis\Code\Datasets\CICDDoS2019\01-12(Training)\DrDoS_MSSQL.csv",
-    r"C:\Users\WornA\OneDrive\Desktop\Uni Work\Honours Thesis\Code\Datasets\CICDDoS2019\01-12(Training)\DrDoS_NetBIOS.csv",
-    r"C:\Users\WornA\OneDrive\Desktop\Uni Work\Honours Thesis\Code\Datasets\CICDDoS2019\01-12(Training)\DrDoS_NTP.csv",
-    r"C:\Users\WornA\OneDrive\Desktop\Uni Work\Honours Thesis\Code\Datasets\CICDDoS2019\01-12(Training)\DrDoS_SNMP.csv",
-    r"C:\Users\WornA\OneDrive\Desktop\Uni Work\Honours Thesis\Code\Datasets\CICDDoS2019\01-12(Training)\DrDoS_SSDP.csv",
-    r"C:\Users\WornA\OneDrive\Desktop\Uni Work\Honours Thesis\Code\Datasets\CICDDoS2019\01-12(Training)\DrDoS_UDP.csv",
-    r"C:\Users\WornA\OneDrive\Desktop\Uni Work\Honours Thesis\Code\Datasets\CICDDoS2019\01-12(Training)\Syn.csv",
-    r"C:\Users\WornA\OneDrive\Desktop\Uni Work\Honours Thesis\Code\Datasets\CICDDoS2019\01-12(Training)\TFTP.csv",
-    r"C:\Users\WornA\OneDrive\Desktop\Uni Work\Honours Thesis\Code\Datasets\CICDDoS2019\01-12(Training)\UDPLag.csv"
+    "./Datasets/CICDDoS2019/01-12(Training)/DrDoS_DNS.csv",
+    "./Datasets/CICDDoS2019/01-12(Training)/DrDoS_LDAP.csv",
+    "./Datasets/CICDDoS2019/01-12(Training)/DrDoS_MSSQL.csv",
+    "./Datasets/CICDDoS2019/01-12(Training)/DrDoS_NetBIOS.csv",
+    "./Datasets/CICDDoS2019/01-12(Training)/DrDoS_NTP.csv",
+    "./Datasets/CICDDoS2019/01-12(Training)/DrDoS_SNMP.csv",
+    "./Datasets/CICDDoS2019/01-12(Training)/DrDoS_SSDP.csv",
+    "./Datasets/CICDDoS2019/01-12(Training)/DrDoS_UDP.csv",
+    "./Datasets/CICDDoS2019/01-12(Training)/Syn.csv",
+    "./Datasets/CICDDoS2019/01-12(Training)/TFTP.csv",
+    "./Datasets/CICDDoS2019/01-12(Training)/UDPLag.csv"
 ]
 
 test_paths = [
-    r"C:\Users\WornA\OneDrive\Desktop\Uni Work\Honours Thesis\Code\Datasets\CICDDoS2019\03-11(Testing)\LDAP.csv",
-    r"C:\Users\WornA\OneDrive\Desktop\Uni Work\Honours Thesis\Code\Datasets\CICDDoS2019\03-11(Testing)\MSSQL.csv",
-    r"C:\Users\WornA\OneDrive\Desktop\Uni Work\Honours Thesis\Code\Datasets\CICDDoS2019\03-11(Testing)\NetBIOS.csv",
-    r"C:\Users\WornA\OneDrive\Desktop\Uni Work\Honours Thesis\Code\Datasets\CICDDoS2019\03-11(Testing)\Portmap.csv",
-    r"C:\Users\WornA\OneDrive\Desktop\Uni Work\Honours Thesis\Code\Datasets\CICDDoS2019\03-11(Testing)\Syn.csv",
-    r"C:\Users\WornA\OneDrive\Desktop\Uni Work\Honours Thesis\Code\Datasets\CICDDoS2019\03-11(Testing)\UDP.csv",
-    r"C:\Users\WornA\OneDrive\Desktop\Uni Work\Honours Thesis\Code\Datasets\CICDDoS2019\03-11(Testing)\UDPLag.csv"
+    "./Datasets/CICDDoS2019/03-11(Testing)/LDAP.csv",
+    "./Datasets/CICDDoS2019/03-11(Testing)/MSSQL.csv",
+    "./Datasets/CICDDoS2019/03-11(Testing)/NetBIOS.csv",
+    "./Datasets/CICDDoS2019/03-11(Testing)/Portmap.csv",
+    "./Datasets/CICDDoS2019/03-11(Testing)/Syn.csv",
+    "./Datasets/CICDDoS2019/03-11(Testing)/UDP.csv",
+    "./Datasets/CICDDoS2019/03-11(Testing)/UDPLag.csv"
 ]
 
-fullpath = r"C:\Users\WornA\OneDrive\Desktop\Uni Work\Honours Thesis\Code\Datasets\CICDDoS2019\CICDDoS19_Full_Train.csv"
-fullpath_test = r"C:\Users\WornA\OneDrive\Desktop\Uni Work\Honours Thesis\Code\Datasets\CICDDoS2019\CICDDoS19_Full_Test.csv"
+fullpath = "./Datasets/CICDDoS2019/CICDDoS19_Full_Train.csv"
+fullpath_test = "./Datasets/CICDDoS2019/CICDDoS19_Full_Test.csv"
 
 with open(fullpath, "wb") as outfile:
     for i, path in enumerate(paths):
@@ -108,8 +108,8 @@ validation.reset_index(drop=True, inplace=True)
 train = train.astype("float64")
 validation = validation.astype("float64")
 
-train.to_csv(r"C:\Users\WornA\OneDrive\Desktop\Uni Work\Honours Thesis\Code\Datasets\Cleaned Datasets\CICDDoS19_training-set.csv", index=False)
-validation.to_csv(r"C:\Users\WornA\OneDrive\Desktop\Uni Work\Honours Thesis\Code\Datasets\Cleaned Datasets\CICDDoS19_validation-set.csv", index=False)
+train.to_csv("./Datasets/Cleaned Datasets/CICDDoS19_training-set.csv", index=False)
+validation.to_csv("./Datasets/Cleaned Datasets/CICDDoS19_validation-set.csv", index=False)
 
 del train, validation
 
@@ -141,23 +141,23 @@ print("Test set has been down-sampled...")
 
 test = test.astype("float64")
 
-test.to_csv(r"C:\Users\WornA\OneDrive\Desktop\Uni Work\Honours Thesis\Code\Datasets\Cleaned Datasets\CICDDoS19_testing-set.csv", index=False)
+test.to_csv("./Datasets/Cleaned Datasets/CICDDoS19_testing-set.csv", index=False)
 
 del test
 
 print("Test csv file has been successfully written to disk...")
 
-train_ds = make_csv_dataset(r"C:\Users\WornA\OneDrive\Desktop\Uni Work\Honours Thesis\Code\Datasets\Cleaned Datasets\CICDDoS19_training-set.csv", label_name="label", batch_size=64, shuffle=True, num_epochs=1, ignore_errors=True)
-train_ds.save(r"C:\Users\WornA\OneDrive\Desktop\Uni Work\Honours Thesis\Code\Datasets\Cleaned Datasets\CICDDoS19_training-set")
+train_ds = make_csv_dataset("./Datasets/Cleaned Datasets/CICDDoS19_training-set.csv", label_name="label", batch_size=64, shuffle=True, num_epochs=1, ignore_errors=True)
+train_ds.save("./Datasets/Cleaned Datasets/CICDDoS19_training-set")
 
 del train_ds
 
-val_ds = make_csv_dataset(r"C:\Users\WornA\OneDrive\Desktop\Uni Work\Honours Thesis\Code\Datasets\Cleaned Datasets\CICDDoS19_validation-set.csv", label_name="label", batch_size=64, shuffle=True, num_epochs=1, ignore_errors=True)
-val_ds.save(r"C:\Users\WornA\OneDrive\Desktop\Uni Work\Honours Thesis\Code\Datasets\Cleaned Datasets\CICDDoS19_validation-set")
+val_ds = make_csv_dataset("./Datasets/Cleaned Datasets/CICDDoS19_validation-set.csv", label_name="label", batch_size=64, shuffle=True, num_epochs=1, ignore_errors=True)
+val_ds.save("./Datasets/Cleaned Datasets/CICDDoS19_validation-set")
 
 del val_ds
 
-test_ds = make_csv_dataset(r"C:\Users\WornA\OneDrive\Desktop\Uni Work\Honours Thesis\Code\Datasets\Cleaned Datasets\CICDDoS19_testing-set.csv", label_name="label", batch_size=64, shuffle=True, num_epochs=1, ignore_errors=True)
-test_ds.save(r"C:\Users\WornA\OneDrive\Desktop\Uni Work\Honours Thesis\Code\Datasets\Cleaned Datasets\CICDDoS19_testing-set")
+test_ds = make_csv_dataset("./Datasets/Cleaned Datasets/CICDDoS19_testing-set.csv", label_name="label", batch_size=64, shuffle=True, num_epochs=1, ignore_errors=True)
+test_ds.save("./Datasets/Cleaned Datasets/CICDDoS19_testing-set")
 
 print(f"All data sets have been successfully written to disk... \n\nPROCESS FINISHED")
