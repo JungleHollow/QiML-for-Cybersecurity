@@ -31,18 +31,18 @@ ENTANGLEMENT_POPULATION = []
 STRONGEST_ENTANGLEMENT = (None, np.inf)
 
 global TRAINING_PATH, VALIDATION_PATH, TESTING_PATH
-TRAINING_PATH = r"C:\Users\WornA\OneDrive\Desktop\Uni Work\Honours Thesis\Code\Datasets\Cleaned Datasets\UNSW_NB15_training-set"
-VALIDATION_PATH = r"C:\Users\WornA\OneDrive\Desktop\Uni Work\Honours Thesis\Code\Datasets\Cleaned Datasets\UNSW_NB15_validation-set"
-TESTING_PATH = r"C:\Users\WornA\OneDrive\Desktop\Uni Work\Honours Thesis\Code\Datasets\Cleaned Datasets\UNSW_NB15_testing-set"
-# TRAINING_PATH = r"C:\Users\WornA\OneDrive\Desktop\Uni Work\Honours Thesis\Code\Datasets\Cleaned Datasets\CICIDS17_training-set"
-# VALIDATION_PATH = r"C:\Users\WornA\OneDrive\Desktop\Uni Work\Honours Thesis\Code\Datasets\Cleaned Datasets\CICIDS17_validation-set"
-# TESTING_PATH = r"C:\Users\WornA\OneDrive\Desktop\Uni Work\Honours Thesis\Code\Datasets\Cleaned Datasets\CICIDS17_testing-set"
-# TRAINING_PATH = r"C:\Users\WornA\OneDrive\Desktop\Uni Work\Honours Thesis\Code\Datasets\Cleaned Datasets\IoT23_training-set"
-# VALIDATION_PATH = r"C:\Users\WornA\OneDrive\Desktop\Uni Work\Honours Thesis\Code\Datasets\Cleaned Datasets\IoT23_validation-set"
-# TESTING_PATH = r"C:\Users\WornA\OneDrive\Desktop\Uni Work\Honours Thesis\Code\Datasets\Cleaned Datasets\IoT23_testing-set"
-# TRAINING_PATH = r"C:\Users\WornA\OneDrive\Desktop\Uni Work\Honours Thesis\Code\Datasets\Cleaned Datasets\CICDDoS19_training-set"
-# VALIDATION_PATH = r"C:\Users\WornA\OneDrive\Desktop\Uni Work\Honours Thesis\Code\Datasets\Cleaned Datasets\CICDDoS19_validation-set"
-# TESTING_PATH = r"C:\Users\WornA\OneDrive\Desktop\Uni Work\Honours Thesis\Code\Datasets\Cleaned Datasets\CICDDoS19_testing-set"
+TRAINING_PATH = "./Datasets/Cleaned Datasets/UNSW_NB15_training-set"
+VALIDATION_PATH = "./Datasets/Cleaned Datasets/UNSW_NB15_validation-set"
+TESTING_PATH = "./Datasets/Cleaned Datasets/UNSW_NB15_testing-set"
+# TRAINING_PATH = "./Datasets/Cleaned Datasets/CICIDS17_training-set"
+# VALIDATION_PATH = "./Datasets/Cleaned Datasets/CICIDS17_validation-set"
+# TESTING_PATH = "./Datasets/Cleaned Datasets/CICIDS17_testing-set"
+# TRAINING_PATH = "./Datasets/Cleaned Datasets/IoT23_training-set"
+# VALIDATION_PATH = "./Datasets/Cleaned Datasets/IoT23_validation-set"
+# TESTING_PATH = "./Datasets/Cleaned Datasets/IoT23_testing-set"
+# TRAINING_PATH = "./Datasets/Cleaned Datasets/CICDDoS19_training-set"
+# VALIDATION_PATH = "./Datasets/Cleaned Datasets/CICDDoS19_validation-set"
+# TESTING_PATH = "./Datasets/Cleaned Datasets/CICDDoS19_testing-set"
 
 global DATASET, N_LAYERS, DROPOUT, LEARNING_RATE, BATCH_SIZE, N_EPOCHS, THRESHOLD
 DATASET = "UNSW"
@@ -59,7 +59,7 @@ THRESHOLD = 0.5
 global N_QUBITS, Q_SAVEPATH, ENTANGLEMENT
 N_QUBITS = 4
 ENTANGLEMENT = "Basic-Entanglement"
-Q_SAVEPATH = rf"C:\Users\WornA\OneDrive\Desktop\Uni Work\Honours Thesis\Code\models_binary\DQiNN_{ENTANGLEMENT}.keras"
+Q_SAVEPATH = f"./models_binary/DQiNN_{ENTANGLEMENT}.keras"
 
 
 # ==== Reset the keras session (trying to work around memory leak issues) ====
@@ -97,8 +97,8 @@ class DQiNN:
         gc.collect()
 
         self.save_path = savepath
-        tmp_name = self.save_path.split("\\")[-1]
-        self.chk_path = rf"C:\Users\WornA\OneDrive\Desktop\Uni Work\Honours Thesis\Code\models_binary\checkpoints\{tmp_name}"
+        tmp_name = self.save_path.split("/")[-1]
+        self.chk_path = f"./models_binary/checkpoints/{tmp_name}"
         del tmp_name
 
         self.prediction_threshold = threshold
@@ -235,7 +235,7 @@ class DQiNN:
         tmp_df["val_loss"] = self.history.history["val_loss"]
         tmp_df["val_accuracy"] = self.history.history["val_accuracy"]
 
-        tmp_df.to_csv(rf"C:\Users\WornA\OneDrive\Desktop\Uni Work\Honours Thesis\Code\models_binary\histories\DQiNN_{ENTANGLEMENT}.csv", index=False)
+        tmp_df.to_csv(f"./models_binary/histories/DQiNN_{ENTANGLEMENT}.csv", index=False)
 
         print(f"Model saved to {self.save_path} successfully...")
 
@@ -269,7 +269,7 @@ class GeneticAlgorithm:
     def initialize(self):
         for combination in self.combinations:
             reset_keras()
-            save_path = rf"C:\Users\WornA\OneDrive\Desktop\Uni Work\Honours Thesis\Code\models_binary\DQiNN_{combination}.keras"
+            save_path = f"./models_binary/DQiNN_{combination}.keras"
             entanglement_gates = self.create_gates(combination)
 
             model = DQiNN(TRAINING_PATH, VALIDATION_PATH, TESTING_PATH, save_path, layers=N_LAYERS, dropout=DROPOUT,
@@ -347,7 +347,7 @@ class GeneticAlgorithm:
                     continue
 
                 reset_keras()
-                save_path = rf"C:\Users\WornA\OneDrive\Desktop\Uni Work\Honours Thesis\Code\models_binary\DQiNN_{combination}.keras"
+                save_path = f"./models_binary/DQiNN_{combination}.keras"
                 entanglement_gates = self.create_gates(combination)
 
                 model = DQiNN(TRAINING_PATH, VALIDATION_PATH, TESTING_PATH, save_path, layers=N_LAYERS, dropout=DROPOUT,
