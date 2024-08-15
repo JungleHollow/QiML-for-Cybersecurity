@@ -318,7 +318,7 @@ class GeneticAlgorithm:
         gates = []
         pairs = entanglement.split("-")
         for pair in pairs:
-            gate = qml.CNOT(wires=[int(pair[0]), int(pair[1])])
+            gate = qml.CNOT(wires=[int(pair[0]) - 1, int(pair[1]) - 1])
             gates.append(gate)
         return gates
 
@@ -327,7 +327,7 @@ class GeneticAlgorithm:
         parent_pairs = parent.split("-")
         valid_pairs = [valid_pair for valid_pair in self.combinations if valid_pair not in parent_pairs]
 
-        possible_combinations = ["-".join([parent_pairs, valid_pair]) for valid_pair in valid_pairs]
+        possible_combinations = ["-".join([parent, valid_pair]) for valid_pair in valid_pairs]
         valid_combinations = [possible_combination for possible_combination in possible_combinations if possible_combination not in self.entanglement_population]
 
         if len(valid_combinations) > 0:
