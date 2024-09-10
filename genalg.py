@@ -41,7 +41,7 @@ def fit_func(chromo: cr.Chromo) -> float:
     dent.reset_keras()  # Fix memory leak issues with repeated keras model fitting and evaluating
     gates, save_name = create_gates(chromo.matrix)
 
-    save_path = f"./Code/models_binary/DQiNN_{save_name}_{dent.N_QUBITS}-qubit_{dent.N_LAYERS}-layer_{dent.DATASET}.keras"
+    save_path = f"./models_binary/DQiNN_{save_name}_{dent.N_QUBITS}-qubit_{dent.N_LAYERS}-layer_{dent.DATASET}.keras"
 
     if not os.path.isfile(save_path):
         my_q_model = dent.DQiNN(dent.TRAINING_PATH, dent.VALIDATION_PATH, dent.TESTING_PATH, save_path, layers=dent.N_LAYERS, dropout=dent.DROPOUT,
@@ -57,6 +57,7 @@ def fit_func(chromo: cr.Chromo) -> float:
                                 learning_rate=dent.LEARNING_RATE, batch_size=dent.BATCH_SIZE, epochs=dent.N_EPOCHS,
                                 threshold=dent.THRESHOLD,
                                 n_qubits=dent.N_QUBITS, entanglements=gates)
+        # my_q_model.evaluate_model(validation=True)
         my_q_model.evaluate_model(validation=False)
 
     score = my_q_model.f1_score
