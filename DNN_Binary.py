@@ -36,10 +36,19 @@ TESTING_PATH = "./Datasets/Cleaned Datasets/UNSW_NB15_testing-set"
 # TRAINING_PATH = "./Datasets/Cleaned Datasets/CICIDS17_training-set"
 # VALIDATION_PATH = "./Datasets/Cleaned Datasets/CICIDS17_validation-set"
 # TESTING_PATH = "./Datasets/Cleaned Datasets/CICIDS17_testing-set"
+# TRAINING_PATH = "./Datasets/Cleaned Datasets/IoT23_training-set"
+# VALIDATION_PATH = "./Datasets/Cleaned Datasets/IoT23_validation-set"
+# TESTING_PATH = "./Datasets/Cleaned Datasets/IoT23_testing-set"
+# TRAINING_PATH = "./Datasets/Cleaned Datasets/CICDDoS19_training-set"
+# VALIDATION_PATH = "./Datasets/Cleaned Datasets/CICDDoS19_validation-set"
+# TESTING_PATH = "./Datasets/Cleaned Datasets/CICDDoS19_testing-set"
+
 
 global DATASET, N_LAYERS, DROPOUT, LEARNING_RATE, BATCH_SIZE, N_EPOCHS, THRESHOLD, SAVEPATH
 DATASET = "UNSW"
 # DATASET = "CICIDS17"
+# DATASET = "IoT23"
+# DATASET = "CICIDS18"
 N_LAYERS = 3
 DROPOUT = 0.1
 LEARNING_RATE = 0.01
@@ -113,7 +122,7 @@ class DNN:
                 self.model.add(Dense(128, activation="relu"))
             self.model.add(Dense(1, activation="sigmoid"))
 
-        self.early_stop = EarlyStopping(monitor="val_loss", patience=30, mode="min")
+        self.early_stop = EarlyStopping(monitor="val_loss", patience=15, mode="min")
         self.checkpointing = ModelCheckpoint(filepath=self.chk_path, save_best_only=True, monitor="val_loss",
                                              mode="min")
 
@@ -228,7 +237,7 @@ class DQiNN:
             self.model.fit(self.training_set.map(dataset_fix), steps_per_epoch=1, epochs=1)   # Needed to allow weight loading
             self.model.load_weights(loadpath)
 
-        self.early_stop = EarlyStopping(monitor="val_loss", patience=30, mode="min")
+        self.early_stop = EarlyStopping(monitor="val_loss", patience=15, mode="min")
         self.checkpointing = ModelCheckpoint(filepath=self.chk_path, save_best_only=True, monitor="val_loss",
                                              mode="min", save_weights_only=True)
 
