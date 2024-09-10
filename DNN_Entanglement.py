@@ -40,15 +40,15 @@ TESTING_PATH = "./Datasets/Cleaned Datasets/UNSW_NB15_testing-set"
 # TRAINING_PATH = "./Datasets/Cleaned Datasets/IoT23_training-set"
 # VALIDATION_PATH = "./Datasets/Cleaned Datasets/IoT23_validation-set"
 # TESTING_PATH = "./Datasets/Cleaned Datasets/IoT23_testing-set"
-# TRAINING_PATH = "./Datasets/Cleaned Datasets/CICDDoS19_training-set"
-# VALIDATION_PATH = "./Datasets/Cleaned Datasets/CICDDoS19_validation-set"
-# TESTING_PATH = "./Datasets/Cleaned Datasets/CICDDoS19_testing-set"
+# TRAINING_PATH = "./Datasets/Cleaned Datasets/CICIDS18_training-set"
+# VALIDATION_PATH = "./Datasets/Cleaned Datasets/CICIDS18_validation-set"
+# TESTING_PATH = "./Datasets/Cleaned Datasets/CICIDS18_testing-set"
 
 global DATASET, N_LAYERS, DROPOUT, LEARNING_RATE, BATCH_SIZE, N_EPOCHS, THRESHOLD
 DATASET = "UNSW"
 # DATASET = "CICIDS17"
 # DATASET = "IoT23"
-# DATASET = "CICDDoS19"
+# DATASET = "CICIDS18"
 N_LAYERS = 1
 DROPOUT = 0.1
 LEARNING_RATE = 0.01
@@ -114,16 +114,12 @@ class DQiNN:
         @qml.qnode(self.dev)
         def qnode(inputs, weights):
             qml.AngleEmbedding(inputs, wires=self.dev.wires)
-            qml.BasicEntanglerLayers(weights, wires=self.dev.wires)
 
             if entanglements:
                 for entanglement in entanglements:
                     qml.apply(entanglement)
-
-            # qml.CNOT(wires=[1, 0])
-            # qml.CNOT(wires=[1, 3])
-            # qml.CNOT(wires=[2, 0])
-            # qml.CNOT(wires=[2, 3])
+            else:
+                qml.BasicEntanglerLayers(weights, wires=self.dev.wires)
 
             return [qml.expval(qml.PauliZ(wires=i)) for i in self.dev.wires]
 
@@ -161,7 +157,7 @@ class DQiNN:
             self.model.fit(self.training_set.map(dataset_fix), steps_per_epoch=1, epochs=1, verbose=0)   # Needed to allow weight loading
             self.model.load_weights(loadpath)
 
-        self.early_stop = EarlyStopping(monitor="val_loss", patience=30, mode="min")
+        self.early_stop = EarlyStopping(monitor="val_loss", patience=10, mode="min")
         self.checkpointing = ModelCheckpoint(filepath=self.chk_path, save_best_only=True, monitor="val_loss",
                                              mode="min", save_weights_only=True)
 
@@ -256,7 +252,7 @@ def init_dqinn():
         my_q_model.evaluate_model()
 
 
-class GeneticAlgorithm:
+class RandomSearch:
     def __init__(self, generations=5):
         self.combinations = ["12", "13", "14", "21", "23", "24", "31", "32", "34", "41", "42", "43"]
         self.entanglement_population = []  # To track what combinations have already been tried
@@ -362,11 +358,11 @@ class GeneticAlgorithm:
                 if ranking != 5:
                     self.update_ranking(result, ranking)
                 self.entanglement_population.append(combination)
-        print("FINISHED ALL GENERATIONS OF THE GENETIC ALGORITHM...")
+        print("FINISHED ALL GENERATIONS OF THE RANDOM SEARCH...")
 
     # Function to display the final results of the search
     def result_summary(self):
-        print(f"\n\n ==== SUMMARY OF THE STRONGEST MODELS AFTER GENETIC ALGORITHM SEARCH ==== \n\n")
+        print(f"\n\n ==== SUMMARY OF THE STRONGEST MODELS AFTER RANDOM SEARCH ==== \n\n")
         for key, value in self.strongest_entanglements.items():
             print(f"Model {key} - {value[0]} entanglement:\n\nLoss: {value[1]['loss']}\nAccuracy: {value[1]['accuracy']}\nPrecision: {value[1]['precision']}\nRecall: {value[1]['recall']}\nF1 Score: {value[1]['f1_score']}")
 
@@ -379,7 +375,7 @@ if __name__ == "__main__":
     # p_q.start()
     # p_q.join()
 
-    ga = GeneticAlgorithm(generations=5)
-    ga.initialize()
-    ga.search()
-    ga.result_summary()
+    rs = RandomSearch(generations=5)
+    rs.initialize()
+    rs.search()
+    rs.result_summary()
