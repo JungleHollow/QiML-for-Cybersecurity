@@ -17,20 +17,20 @@ def index_logic(index):
 
 
 paths = [
-    r"C:\Users\WornA\OneDrive\Desktop\Uni Work\Honours Thesis\Code\Datasets\CICIDS2018\02-14-2018.csv",
-    r"C:\Users\WornA\OneDrive\Desktop\Uni Work\Honours Thesis\Code\Datasets\CICIDS2018\02-15-2018.csv",
-    r"C:\Users\WornA\OneDrive\Desktop\Uni Work\Honours Thesis\Code\Datasets\CICIDS2018\02-16-2018.csv",
-    r"C:\Users\WornA\OneDrive\Desktop\Uni Work\Honours Thesis\Code\Datasets\CICIDS2018\02-21-2018.csv",
-    r"C:\Users\WornA\OneDrive\Desktop\Uni Work\Honours Thesis\Code\Datasets\CICIDS2018\02-22-2018.csv",
-    r"C:\Users\WornA\OneDrive\Desktop\Uni Work\Honours Thesis\Code\Datasets\CICIDS2018\02-23-2018.csv",
-    r"C:\Users\WornA\OneDrive\Desktop\Uni Work\Honours Thesis\Code\Datasets\CICIDS2018\02-28-2018.csv",
-    r"C:\Users\WornA\OneDrive\Desktop\Uni Work\Honours Thesis\Code\Datasets\CICIDS2018\03-01-2018.csv",
-    r"C:\Users\WornA\OneDrive\Desktop\Uni Work\Honours Thesis\Code\Datasets\CICIDS2018\03-02-2018.csv",
+    "./Datasets/CICIDS2018/02-14-2018.csv",
+    "./Datasets/CICIDS2018/02-15-2018.csv",
+    "./Datasets/CICIDS2018/02-16-2018.csv",
+    "./Datasets/CICIDS2018/02-21-2018.csv",
+    "./Datasets/CICIDS2018/02-22-2018.csv",
+    "./Datasets/CICIDS2018/02-23-2018.csv",
+    "./Datasets/CICIDS2018/02-28-2018.csv",
+    "./Datasets/CICIDS2018/03-01-2018.csv",
+    "./Datasets/CICIDS2018/03-02-2018.csv",
 ]
 
-problem_path = r"C:\Users\WornA\OneDrive\Desktop\Uni Work\Honours Thesis\Code\Datasets\CICIDS2018\02-20-2018.csv"
+problem_path = "./Datasets/CICIDS2018/02-20-2018.csv"
 
-fullpath = r"C:\Users\WornA\OneDrive\Desktop\Uni Work\Honours Thesis\Code\Datasets\CICIDS2018\CICIDS18_Full.csv"
+fullpath = "./Datasets/CICIDS2018/CICIDS18_Full.csv"
 
 if not os.path.isfile(fullpath):
     with open(fullpath, "wb") as outfile:
@@ -74,11 +74,12 @@ if not os.path.isfile(fullpath):
 else:
     all_data = pd.read_csv(fullpath, skiprows=lambda x: index_logic(x))
 
-train = all_data.iloc[:int(all_data.shape[0] * 0.8), :]
-test = all_data.iloc[int(all_data.shape[0] * 0.8):, :]
-test.reset_index(drop=True, inplace=True)  # Reset the test set's indexes
+train, test = train_test_split(all_data, test_size=0.2, random_state=1337, stratify=all_data["label"])
 
 del all_data
+
+train.reset_index(drop=True, inplace=True)
+test.reset_index(drop=True, inplace=True)  # Reset the test set's indexes
 
 train.dropna(inplace=True)
 test.dropna(inplace=True)
@@ -99,6 +100,10 @@ print(f"All data have been log-transformed and scaled...")
 
 del train_numeric, test_numeric
 
+train, train_discarded = train_test_split(train, test_size=0.99, random_state=1337, stratify=train["label"])
+
+del train_discarded
+
 train.dropna(inplace=True)
 test.dropna(inplace=True)
 
@@ -117,14 +122,9 @@ del train_y
 train.dropna(inplace=True)
 train.reset_index(drop=True, inplace=True)
 
-train, validation = train_test_split(train, test_size=0.1, random_state=1337)
-
-train, train_discarded = train_test_split(train, test_size=0.98, random_state=1337)
-validation, validation_discarded = train_test_split(validation, test_size=0.98, random_state=1337)
+train, validation = train_test_split(train, test_size=0.1, random_state=1337, stratify=train["label"])
 
 print(f"Finished sampling the training set...")
-
-del train_discarded, validation_discarded
 
 train.reset_index(drop=True, inplace=True)
 validation.reset_index(drop=True, inplace=True)
@@ -134,27 +134,27 @@ train = train.astype("float64")
 validation = validation.astype("float64")
 test = test.astype("float64")
 
-train.to_csv(r"C:\Users\WornA\OneDrive\Desktop\Uni Work\Honours Thesis\Code\Datasets\Cleaned Datasets\CICIDS18_training-set.csv", index=False)
-validation.to_csv(r"C:\Users\WornA\OneDrive\Desktop\Uni Work\Honours Thesis\Code\Datasets\Cleaned Datasets\CICIDS18_validation-set.csv", index=False)
-test.to_csv(r"C:\Users\WornA\OneDrive\Desktop\Uni Work\Honours Thesis\Code\Datasets\Cleaned Datasets\CICIDS18_testing-set.csv", index=False)
+train.to_csv("./Datasets/Cleaned Datasets/CICIDS18_training-set.csv", index=False)
+validation.to_csv("./Datasets/Cleaned Datasets/CICIDS18_validation-set.csv", index=False)
+test.to_csv("./Datasets/Cleaned Datasets/CICIDS18_testing-set.csv", index=False)
 
 del train, validation, test
 
 print(f"All csv files have been successfully written to disk...")
 
-train_ds = make_csv_dataset(r"C:\Users\WornA\OneDrive\Desktop\Uni Work\Honours Thesis\Code\Datasets\Cleaned Datasets\CICIDS18_training-set.csv",
+train_ds = make_csv_dataset("./Datasets/Cleaned Datasets/CICIDS18_training-set.csv",
                             label_name="label", batch_size=64, shuffle=True, num_epochs=1, ignore_errors=True)
 
-train_ds.save(r"C:\Users\WornA\OneDrive\Desktop\Uni Work\Honours Thesis\Code\Datasets\Cleaned Datasets\CICIDS18_training-set")
+train_ds.save("./Datasets/Cleaned Datasets/CICIDS18_training-set")
 
-val_ds = make_csv_dataset(r"C:\Users\WornA\OneDrive\Desktop\Uni Work\Honours Thesis\Code\Datasets\Cleaned Datasets\CICIDS18_validation-set.csv",
+val_ds = make_csv_dataset("./Datasets/Cleaned Datasets/CICIDS18_validation-set.csv",
                           label_name="label", batch_size=64, shuffle=True, num_epochs=1, ignore_errors=True)
 
-val_ds.save(r"C:\Users\WornA\OneDrive\Desktop\Uni Work\Honours Thesis\Code\Datasets\Cleaned Datasets\CICIDS18_validation-set")
+val_ds.save("./Datasets/Cleaned Datasets/CICIDS18_validation-set")
 
-test_ds = make_csv_dataset(r"C:\Users\WornA\OneDrive\Desktop\Uni Work\Honours Thesis\Code\Datasets\Cleaned Datasets\CICIDS18_testing-set.csv",
+test_ds = make_csv_dataset("./Datasets/Cleaned Datasets/CICIDS18_testing-set.csv",
                            label_name="label", batch_size=64, shuffle=False, num_epochs=1, ignore_errors=True)
 
-test_ds.save(r"C:\Users\WornA\OneDrive\Desktop\Uni Work\Honours Thesis\Code\Datasets\Cleaned Datasets\CICIDS18_testing-set")
+test_ds.save("./Datasets/Cleaned Datasets/CICIDS18_testing-set")
 
 print(f"All data sets have been successfully written to disk...\n\nPROCESS FINISHED")
